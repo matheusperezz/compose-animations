@@ -1,7 +1,5 @@
 package br.com.compras.data
 
-import br.com.compras.data.models.Product
-
 val foods = listOf(
     "Pizza",
     "Hambúrguer",
@@ -34,5 +32,3 @@ val foods = listOf(
     "Guacamole",
     "Poke"
 )
-
-val sampleProdutcsList: List<Product> = listOf()

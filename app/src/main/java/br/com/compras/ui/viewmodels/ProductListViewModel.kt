@@ -7,9 +7,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlin.random.Random
 
-class HomeScreenViewModel: ViewModel() {
+class ProductListViewModel: ViewModel() {
 
-    private val _productList = MutableStateFlow(listOf<Product>())
     val productList = _productList.asStateFlow()
 
     fun addRandomProduct() {
@@ -21,4 +20,7 @@ class HomeScreenViewModel: ViewModel() {
         _productList.value = _productList.value + product
     }
 
+    companion object {
+        private val _productList = MutableStateFlow(listOf<Product>())
+    }
 }

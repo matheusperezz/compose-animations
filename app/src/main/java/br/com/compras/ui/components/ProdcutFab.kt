@@ -10,7 +10,7 @@ import br.com.compras.ui.theme.softBlack
 import br.com.compras.ui.theme.softWhite
 
 @Composable
-fun ProductHomeFab(onFabClick: () -> Unit = {}) {
+fun ProductFab(onFabClick: () -> Unit = {}) {
     FloatingActionButton(
         onClick = { onFabClick() },
         contentColor = softWhite,
@@ -22,6 +22,6 @@ fun ProductHomeFab(onFabClick: () -> Unit = {}) {
 
 @Preview(showBackground = true)
 @Composable
-fun ProductHomeFabPreview() {
-    ProductHomeFab()
+fun ProductFabPreview() {
+    ProductFab()
 }
