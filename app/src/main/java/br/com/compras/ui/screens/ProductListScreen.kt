@@ -1,5 +1,6 @@
 package br.com.compras.ui.screens
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -11,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import br.com.compras.ui.components.ProductCard
 import br.com.compras.ui.viewmodels.ProductListViewModel
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ProductListScreen(viewModel: ProductListViewModel) {
 
@@ -21,7 +23,7 @@ fun ProductListScreen(viewModel: ProductListViewModel) {
             .padding(16.dp)
     ) {
         items(products) { product ->
-            ProductCard(product = product)
+            ProductCard(product = product, modifier = Modifier.animateItemPlacement())
         }
     }
 }

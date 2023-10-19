@@ -19,11 +19,14 @@ import br.com.compras.ui.theme.softWhite
 import kotlin.random.Random
 
 @Composable
-fun ProductCard(product: Product) {
+fun ProductCard(
+    product: Product,
+    modifier: Modifier = Modifier
+) {
     val formatPrice = "%.2f".format(product.price)
 
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp),
         colors = CardDefaults.cardColors(

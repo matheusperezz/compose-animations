@@ -1,9 +1,12 @@
 package br.com.compras
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,6 +16,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,6 +42,16 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
             val backStackEntryState by navController.currentBackStackEntryAsState()
             val currentDestination = backStackEntryState?.destination
+
+            LaunchedEffect(Unit) {
+                navController.addOnDestinationChangedListener { _, _, _ ->
+                    val routes = navController.backQueue.map {
+                        it.destination.route
+                    }
+                    Log.i("MainActivity", "onCreate: back stack - $routes")
+                }
+            }
+
             ComprasTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -44,13 +59,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val viewModel by viewModels<ProductListViewModel>()
                     val currentRoute = currentDestination?.route
-                    val selectedItem: BottomBarItem by remember(currentDestination) {
-                        val item = when (currentRoute){
-                            productListRoute -> BottomBarItem.ProductList
-                            else -> BottomBarItem.ProductList
-                        }
-                        mutableStateOf(item)
-                    }
+                    val bottomBarItemSelected: MutableState<BottomBarItem> = remember { mutableStateOf(BottomBarItem.ProductList) }
                     val containsInBottomBarItems = when(currentRoute) {
                         productListRoute -> true
                         else -> false
@@ -63,9 +72,10 @@ class MainActivity : ComponentActivity() {
 
                     ComprasApp(
                         onFabClick = { viewModel.addRandomProduct() },
-                        bottomBarItemSelected = selectedItem,
+                        bottomBarItemSelected = bottomBarItemSelected,
                         onBottomBarItemSelectedChange = { item ->
                             navController.navigateSingleTopWithPopUpTo(item)
+                            bottomBarItemSelected.value = item
                         },
                         isShowFab = isShowFab
                     ) {
@@ -78,10 +88,10 @@ class MainActivity : ComponentActivity() {
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
 fun ComprasApp(
-    bottomBarItemSelected: BottomBarItem = bottomBarItems.first(),
+    bottomBarItemSelected: MutableState<BottomBarItem> = remember { mutableStateOf(bottomBarItems.first()) },
     onBottomBarItemSelectedChange: (BottomBarItem) -> Unit = {},
     isShowTopBar: Boolean = false,
     isShowBottomBar: Boolean = false,
