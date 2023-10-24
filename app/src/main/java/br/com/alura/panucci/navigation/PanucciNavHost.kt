@@ -8,7 +8,7 @@ import androidx.navigation.compose.NavHost
 fun PanucciNavHost(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = homeGraphRoute
+        startDestination = homeGraphRoute,
     ) {
         homeGraph(navController)
         productDetailsScreen(navController)
